@@ -1,0 +1,7 @@
+id = "vscode-classics"
+name = "VS Code Classics"
+version = "0.1.0"
+schema_version = 1
+authors = ["Alan <alanisme.my@gmail.com>"]
+description = "❤️ All 17 built-in Visual Studio Code color themes, ported to Zed."
+repository = "https://github.com/alanisme/vscode-themes-for-zed"

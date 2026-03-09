@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "convert": "tsx scripts/convert.ts",
+    "validate": "tsx scripts/validate.ts",
+    "build": "tsx scripts/convert.ts && tsx scripts/validate.ts",
+    "typecheck": "tsc --noEmit",
+    "check": "tsx scripts/convert.ts && tsx scripts/validate.ts && git diff --exit-code themes/"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "@types/node": "^22.0.0"
+  }
+}
