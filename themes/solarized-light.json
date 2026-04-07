@@ -11,19 +11,25 @@
         "elevated_surface.background": "#eee8d5ff",
         "surface.background": "#eee8d5ff",
         "panel.background": "#eee8d5ff",
+        "panel.indent_guide": "#586e7580",
+        "panel.indent_guide_active": "#081e2580",
+        "panel.indent_guide_hover": "#081e2580",
         "border": "#ddd6c1ff",
         "border.variant": "#ddd6c1ff",
         "border.focused": "#b49471ff",
         "border.selected": "#ddd6c1ff",
         "border.transparent": "#ddd6c100",
         "border.disabled": "#ddd6c180",
+        "pane.focused_border": "#b49471ff",
         "pane_group.border": "#ddd6c1ff",
+        "panel.focused_border": "#b49471ff",
         "editor.background": "#fdf6e3ff",
         "editor.foreground": "#657b83ff",
         "editor.gutter.background": "#fdf6e3ff",
         "editor.active_line.background": "#eee8d5ff",
         "editor.active_line_number": "#567983ff",
         "editor.line_number": "#657b8366",
+        "editor.hover_line_number": "#567983ff",
         "editor.indent_guide": "#586e7580",
         "editor.indent_guide_active": "#081e2580",
         "editor.invisible": "#586e7580",
@@ -32,14 +38,18 @@
         "editor.document_highlight.read_background": "#0000001a",
         "editor.document_highlight.write_background": "#00000026",
         "editor.document_highlight.bracket_background": "#657b831a",
+        "editor.subheader.background": "#eee8d5ff",
+        "editor.highlighted_line.background": "#eee8d5ff",
         "tab_bar.background": "#d9d2c2ff",
         "tab.active_background": "#fdf6e3ff",
         "tab.inactive_background": "#d3cbb7ff",
         "status_bar.background": "#eee8d5ff",
         "title_bar.background": "#eee8d5ff",
+        "title_bar.inactive_background": "#eee8d599",
         "toolbar.background": "#fdf6e3ff",
         "drop_target.background": "#dfca8866",
         "search.match_background": "#657b8333",
+        "search.active_match_background": "#657b8333",
         "element.background": "#ac9d5726",
         "element.hover": "#dfca8844",
         "element.active": "#dfca88cc",
@@ -104,6 +114,13 @@
         "predictive": "#657b834d",
         "predictive.background": "#00000000",
         "predictive.border": "#00000000",
+        "version_control.added": "#587c0cff",
+        "version_control.deleted": "#94151bff",
+        "version_control.modified": "#0c7d9dff",
+        "version_control.word_added": "#587c0c33",
+        "version_control.word_deleted": "#94151b33",
+        "version_control.conflict_marker.ours": "#587c0c1a",
+        "version_control.conflict_marker.theirs": "#3794ff1a",
         "terminal.background": "#fdf6e3ff",
         "terminal.foreground": "#657b83ff",
         "terminal.bright_foreground": "#657b83ff",
@@ -124,6 +141,18 @@
         "terminal.ansi.bright_magenta": "#6c71c4ff",
         "terminal.ansi.bright_cyan": "#93a1a1ff",
         "terminal.ansi.bright_white": "#fdf6e3ff",
+        "terminal.ansi.dim_black": "#07364280",
+        "terminal.ansi.dim_red": "#dc322f80",
+        "terminal.ansi.dim_green": "#85990080",
+        "terminal.ansi.dim_yellow": "#b5890080",
+        "terminal.ansi.dim_blue": "#268bd280",
+        "terminal.ansi.dim_magenta": "#d3368280",
+        "terminal.ansi.dim_cyan": "#2aa19880",
+        "terminal.ansi.dim_white": "#eee8d580",
+        "terminal.ansi.background": "#fdf6e3ff",
+        "unreachable": "#657b8366",
+        "unreachable.background": "#657b8312",
+        "unreachable.border": "#00000000",
         "link_text.hover": "#ac9d57ff",
         "syntax": {
           "comment": {
@@ -179,6 +208,9 @@
           "function": {
             "color": "#268bd2ff"
           },
+          "function.builtin": {
+            "color": "#268bd2ff"
+          },
           "tag": {
             "color": "#268bd2ff"
           },
@@ -192,7 +224,7 @@
             "color": "#93a1a1ff"
           },
           "punctuation.delimiter": {
-            "color": "#dc322fff"
+            "color": "#6c71c4ff"
           },
           "punctuation": {
             "color": "#859900ff"
@@ -222,8 +254,53 @@
           "label": {
             "color": "#268bd2ff"
           },
+          "constructor": {
+            "color": "#268bd2ff"
+          },
+          "namespace": {
+            "color": "#cb4b16ff"
+          },
+          "diff.minus": {
+            "color": "#dc322fff"
+          },
+          "diff.plus": {
+            "color": "#859900ff"
+          },
+          "embedded": {
+            "color": "#657b83ff"
+          },
+          "selector": {
+            "color": "#268bd2ff"
+          },
+          "selector.pseudo": {
+            "color": "#93a1a1ff"
+          },
+          "variant": {
+            "color": "#268bd2ff"
+          },
+          "string.special": {
+            "color": "#2aa198ff"
+          },
+          "string.special.symbol": {
+            "color": "#cb4b16ff"
+          },
           "primary": {
             "color": "#657b83ff"
+          },
+          "link_uri": {
+            "color": "#ac9d57ff"
+          },
+          "hint": {
+            "color": "#657b8366"
+          },
+          "predictive": {
+            "color": "#657b8366"
+          },
+          "punctuation.list_marker": {
+            "color": "#859900ff"
+          },
+          "punctuation.markup": {
+            "color": "#859900ff"
           }
         },
         "players": [

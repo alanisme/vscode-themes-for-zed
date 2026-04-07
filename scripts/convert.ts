@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const THEMES_DIR = join(__dirname, "..", "themes");
-const VSCODE_REF = process.env["VSCODE_REF"] ?? "1.96.4";
+const VSCODE_REF = process.env["VSCODE_REF"] ?? "1.114.0";
 const GITHUB_RAW =
   `https://raw.githubusercontent.com/microsoft/vscode/${VSCODE_REF}/extensions`;
 const THEME_SUFFIX = " (VS Code)";
@@ -257,7 +257,7 @@ const SCOPE_TO_TOKEN: [string[], string][] = [
   ],
   [["support.type", "support.class"], "type.builtin"],
   [["entity.name.function", "entity.name.method"], "function"],
-  [["support.function"], "function"],
+  [["support.function"], "function.builtin"],
   [["entity.name.tag"], "tag"],
   [["entity.other.attribute-name"], "attribute"],
   [
@@ -309,6 +309,33 @@ const SCOPE_TO_TOKEN: [string[], string][] = [
     "label",
   ],
   [["constructor", "entity.name.function.constructor"], "constructor"],
+  [["entity.name.namespace"], "namespace"],
+  [["markup.deleted"], "diff.minus"],
+  [["markup.inserted"], "diff.plus"],
+  [
+    ["meta.embedded", "source.groovy.embedded", "source.coffee.embedded"],
+    "embedded",
+  ],
+  [["entity.name.tag.css", "entity.name.tag.less"], "selector"],
+  [
+    [
+      "entity.other.attribute-name.pseudo-class",
+      "entity.other.attribute-name.pseudo-element.css",
+    ],
+    "selector.pseudo",
+  ],
+  [["variable.other.enummember"], "variant"],
+  [["string.tag", "string.value"], "string.special"],
+  [["constant.other.symbol"], "string.special.symbol"],
+  [
+    [
+      "punctuation.definition.heading.markdown",
+      "punctuation.definition.bold.markdown",
+      "punctuation.definition.italic.markdown",
+      "punctuation.definition.quote.begin.markdown",
+    ],
+    "punctuation.markup",
+  ],
 ];
 
 const SEMANTIC_TOKEN_TO_ZED: Record<string, string> = {
@@ -328,7 +355,7 @@ const SEMANTIC_TOKEN_TO_ZED: Record<string, string> = {
   interface: "type",
   enum: "enum",
   enumMember: "constant",
-  namespace: "type",
+  namespace: "namespace",
   keyword: "keyword",
   operator: "operator",
   comment: "comment",
@@ -591,7 +618,7 @@ function mapTokenColors(
   }
 
   const defaultSettings = tokenColors.find((r) => !r.scope && r.settings);
-  const syntax: Record<string, SyntaxEntry> = {};
+  const syntax: Record<string, SyntaxEntry> = Object.create(null);
 
   for (const [scopes, token] of SCOPE_TO_TOKEN) {
     if (syntax[token]) continue;
@@ -812,19 +839,25 @@ function convertTheme(
     "elevated_surface.background": dropdownBg,
     "surface.background": panelBg,
     "panel.background": panelBg,
+    "panel.indent_guide": indentGuide,
+    "panel.indent_guide_active": indentGuideActive,
+    "panel.indent_guide_hover": indentGuideActive,
     border,
     "border.variant": border,
     "border.focused": focusBorder,
     "border.selected": border,
     "border.transparent": transparentize(border, 0),
     "border.disabled": transparentize(border, 0.5),
+    "pane.focused_border": focusBorder,
     "pane_group.border": paneGroupBorder,
+    "panel.focused_border": focusBorder,
     "editor.background": editorBg,
     "editor.foreground": editorFg,
     "editor.gutter.background": editorBg,
     "editor.active_line.background": lineHighlight,
     "editor.active_line_number": activeLineNumber,
     "editor.line_number": lineNumber,
+    "editor.hover_line_number": activeLineNumber,
     "editor.indent_guide": indentGuide,
     "editor.indent_guide_active": indentGuideActive,
     "editor.invisible": whitespace,
@@ -833,14 +866,20 @@ function convertTheme(
     "editor.document_highlight.read_background": docHighlightRead,
     "editor.document_highlight.write_background": docHighlightWrite,
     "editor.document_highlight.bracket_background": bracketBg,
+    "editor.subheader.background": panelBg,
+    "editor.highlighted_line.background": lineHighlight,
     "tab_bar.background": tabBarBg,
     "tab.active_background": tabActiveBg,
     "tab.inactive_background": tabInactiveBg,
     "status_bar.background": statusBg,
     "title_bar.background": titleBg,
+    "title_bar.inactive_background":
+      pick(colors, "titleBar.inactiveBackground") ?? transparentize(titleBg, 0.6),
     "toolbar.background": toolbarBg,
     "drop_target.background": dropBg,
     "search.match_background": searchMatchBg,
+    "search.active_match_background":
+      pick(colors, "editor.findMatchBackground") ?? searchMatchBg,
     "element.background": transparentize(buttonBg, 0.15),
     "element.hover": hoverBg,
     "element.active": transparentize(selectedBg, 0.8),
@@ -909,6 +948,19 @@ function convertTheme(
     predictive: transparentize(fg, 0.3),
     "predictive.background": "#00000000",
     "predictive.border": "#00000000",
+    "version_control.added": createdFg,
+    "version_control.deleted": deletedFg,
+    "version_control.modified": modifiedFg,
+    "version_control.word_added":
+      pick(colors, "diffEditor.insertedTextBackground") ??
+      transparentize(createdFg, 0.2),
+    "version_control.word_deleted":
+      pick(colors, "diffEditor.removedTextBackground") ??
+      transparentize(deletedFg, 0.2),
+    "version_control.conflict_marker.ours":
+      transparentize(createdFg, 0.1),
+    "version_control.conflict_marker.theirs":
+      transparentize(infoFg, 0.1),
     "terminal.background": pick(colors, "terminal.background") ?? editorBg,
     "terminal.foreground": pick(colors, "terminal.foreground") ?? editorFg,
     "terminal.bright_foreground":
@@ -942,8 +994,125 @@ function convertTheme(
       pick(colors, "terminal.ansiBrightCyan") ?? "#29b8dbff",
     "terminal.ansi.bright_white":
       pick(colors, "terminal.ansiBrightWhite") ?? "#e5e5e5ff",
+    "terminal.ansi.dim_black": transparentize(
+      pick(colors, "terminal.ansiBlack") ?? "#000000ff",
+      0.5,
+    ),
+    "terminal.ansi.dim_red": transparentize(
+      pick(colors, "terminal.ansiRed") ?? "#cd3131ff",
+      0.5,
+    ),
+    "terminal.ansi.dim_green": transparentize(
+      pick(colors, "terminal.ansiGreen") ?? "#0dbc79ff",
+      0.5,
+    ),
+    "terminal.ansi.dim_yellow": transparentize(
+      pick(colors, "terminal.ansiYellow") ?? "#e5e510ff",
+      0.5,
+    ),
+    "terminal.ansi.dim_blue": transparentize(
+      pick(colors, "terminal.ansiBlue") ?? "#2472c8ff",
+      0.5,
+    ),
+    "terminal.ansi.dim_magenta": transparentize(
+      pick(colors, "terminal.ansiMagenta") ?? "#bc3fbcff",
+      0.5,
+    ),
+    "terminal.ansi.dim_cyan": transparentize(
+      pick(colors, "terminal.ansiCyan") ?? "#11a8cdff",
+      0.5,
+    ),
+    "terminal.ansi.dim_white": transparentize(
+      pick(colors, "terminal.ansiWhite") ?? "#e5e5e5ff",
+      0.5,
+    ),
+    "terminal.ansi.background":
+      pick(colors, "terminal.background") ?? editorBg,
+    unreachable:
+      pick(colors, "editorUnnecessaryCode.border") ?? transparentize(fg, 0.4),
+    "unreachable.background": transparentize(
+      pick(colors, "editorUnnecessaryCode.border") ?? fg,
+      0.07,
+    ),
+    "unreachable.border":
+      pick(colors, "editorUnnecessaryCode.border") ?? "#00000000",
     "link_text.hover": linkHover ?? buttonBg,
-    syntax: mapTokenColors(tokenColors, semanticTokenColors),
+    syntax: (() => {
+      const s = mapTokenColors(tokenColors, semanticTokenColors);
+      const has = (k: string) =>
+        Object.prototype.hasOwnProperty.call(s, k);
+
+      // Direct fallbacks from VS Code UI colors
+      if (!has("primary")) s["primary"] = { color: editorFg };
+      if (!has("link_uri"))
+        s["link_uri"] = {
+          color:
+            pick(colors, "textLink.foreground", "textLink.activeForeground") ??
+            buttonBg,
+        };
+      if (!has("hint"))
+        s["hint"] = {
+          color:
+            pick(colors, "editorInlayHint.foreground") ??
+            transparentize(editorFg, 0.4) ??
+            editorFg,
+        };
+      if (!has("predictive"))
+        s["predictive"] = {
+          color: transparentize(editorFg, 0.4) ?? editorFg,
+        };
+
+      // Token-to-token fallback chains (parent/sibling tokens)
+      const fallbacks: [string, string[]][] = [
+        ["constructor", ["function"]],
+        ["function.builtin", ["function"]],
+        ["type.builtin", ["type"]],
+        ["namespace", ["type"]],
+        ["enum", ["type"]],
+        ["variant", ["enum", "constant"]],
+        ["variable.special", ["variable"]],
+        ["string.escape", ["string"]],
+        ["string.special", ["string"]],
+        ["string.special.symbol", ["constant", "string"]],
+        ["punctuation.bracket", ["punctuation"]],
+        ["punctuation.delimiter", ["punctuation"]],
+        ["punctuation.list_marker", ["punctuation"]],
+        ["punctuation.markup", ["punctuation"]],
+        ["punctuation.special", ["punctuation"]],
+        ["selector", ["tag"]],
+        ["selector.pseudo", ["selector", "attribute"]],
+        ["text.literal", ["string"]],
+      ];
+      for (const [token, chain] of fallbacks) {
+        if (has(token)) continue;
+        for (const fb of chain) {
+          if (has(fb)) {
+            s[token] = { ...s[fb] };
+            break;
+          }
+        }
+      }
+
+      // Any still-missing tokens use editor foreground (matches VS Code behavior)
+      const allTokens = [
+        "attribute", "boolean", "comment", "comment.doc", "constant",
+        "constructor", "diff.minus", "diff.plus", "embedded", "emphasis",
+        "emphasis.strong", "enum", "function", "function.builtin", "keyword",
+        "label", "link_text", "namespace", "number", "operator", "preproc",
+        "property", "punctuation", "punctuation.bracket",
+        "punctuation.delimiter", "punctuation.list_marker",
+        "punctuation.markup", "punctuation.special", "selector",
+        "selector.pseudo", "string", "string.escape", "string.regex",
+        "string.special", "string.special.symbol", "tag", "text.literal",
+        "title", "type", "type.builtin", "variable", "variable.special",
+        "variant",
+      ];
+      for (const token of allTokens) {
+        if (!has(token)) s[token] = { color: editorFg };
+      }
+
+      return s;
+    })(),
     players: derivePlayerColors(cursorColor, selectionBg),
   };
 
