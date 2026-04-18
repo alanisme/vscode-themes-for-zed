@@ -1,9 +1,17 @@
-import { readFileSync, readdirSync } from "node:fs";
-import { join, dirname } from "node:path";
+import { readdirSync, readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { THEME_SOURCES } from "./sources.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const THEMES_DIR = join(__dirname, "..", "themes");
+const EXPECTED_FILES = new Set(THEME_SOURCES.map((s) => s.output));
+const EXPECTED_NAMES = new Set(
+  THEME_SOURCES.map((s) => `${s.family} (VS Code)`),
+);
+const EXPECTED_APPEARANCE = new Map(
+  THEME_SOURCES.map((s) => [s.output, s.appearance]),
+);
 
 const REQUIRED_STYLE_KEYS = [
   "background",
@@ -58,10 +66,28 @@ interface ThemeData {
 }
 
 const files = readdirSync(THEMES_DIR).filter((f) => f.endsWith(".json"));
+const filesSet = new Set(files);
 
-if (files.length === 0) {
-  console.error("No theme files found in themes/");
-  process.exit(1);
+const missing = [...EXPECTED_FILES].filter((f) => !filesSet.has(f));
+const unexpected = files.filter((f) => !EXPECTED_FILES.has(f));
+
+if (missing.length > 0) {
+  for (const f of missing) {
+    console.error(`  ERROR: expected theme file missing: ${f}`);
+    errors++;
+  }
+}
+if (unexpected.length > 0) {
+  for (const f of unexpected) {
+    console.error(`  ERROR: unexpected theme file in themes/: ${f}`);
+    errors++;
+  }
+}
+if (files.length !== EXPECTED_FILES.size) {
+  console.error(
+    `  ERROR: expected ${EXPECTED_FILES.size} theme files, found ${files.length}`,
+  );
+  errors++;
 }
 
 for (const file of files) {
@@ -87,8 +113,16 @@ for (const file of files) {
     const label = `${file}/${theme.name ?? "?"}`;
 
     if (!theme.name) error(label, "Missing theme 'name'");
+    else if (EXPECTED_FILES.has(file) && !EXPECTED_NAMES.has(theme.name))
+      error(label, `Theme name '${theme.name}' is not in expected set`);
     if (!["dark", "light"].includes(theme.appearance ?? ""))
       error(label, `Invalid appearance: '${theme.appearance}'`);
+    const expectedAppearance = EXPECTED_APPEARANCE.get(file);
+    if (expectedAppearance && theme.appearance !== expectedAppearance)
+      error(
+        label,
+        `Appearance mismatch: expected '${expectedAppearance}', got '${theme.appearance}'`,
+      );
 
     const style = (theme.style ?? {}) as Record<string, unknown>;
 
@@ -96,12 +130,12 @@ for (const file of files) {
       if (!style[key]) warn(label, `Missing style key '${key}'`);
     }
 
-    const syntax = (style["syntax"] ?? {}) as Record<string, unknown>;
+    const syntax = (style.syntax ?? {}) as Record<string, unknown>;
     for (const key of REQUIRED_SYNTAX_KEYS) {
       if (!syntax[key]) warn(label, `Missing syntax token '${key}'`);
     }
 
-    if (!Array.isArray(style["players"]) || style["players"].length === 0)
+    if (!Array.isArray(style.players) || style.players.length === 0)
       error(label, "Missing or empty 'players' array");
 
     const allColors: [string, string][] = [];

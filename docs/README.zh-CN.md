@@ -1,6 +1,6 @@
 # VS Code Classics for Zed
 
-**VS Code 全部 17 款内置主题，完整移植到 Zed。**
+**VS Code 全部 19 款内置主题，完整移植到 Zed。**
 
 翻译: [English](../README.md) | [Español](README.es.md) | [Français](README.fr.md) | [日本語](README.ja.md)
 
@@ -14,6 +14,7 @@
 
 | 主题 | 说明 |
 |------|------|
+| **Dark 2026 (VS Code)** | VS Code 默认深色主题 (2026 刷新) |
 | **Dark Modern (VS Code)** | VS Code 默认深色主题 (2023+) |
 | **Dark+ (VS Code)** | VS Code 经典深色主题 |
 | **Visual Studio Dark (VS Code)** | 经典 VS 深色底色 |
@@ -30,6 +31,7 @@
 
 | 主题 | 说明 |
 |------|------|
+| **Light 2026 (VS Code)** | VS Code 默认浅色主题 (2026 刷新) |
 | **Light Modern (VS Code)** | VS Code 默认浅色主题 (2023+) |
 | **Light+ (VS Code)** | VS Code 经典浅色主题 |
 | **Visual Studio Light (VS Code)** | 经典 VS 浅色底色 |
@@ -120,7 +122,7 @@ vscode-themes-for-zed/
 ├── LICENSE                 MIT
 ├── README.md               英文说明
 ├── docs/                   翻译版 README
-├── themes/                 生成的 Zed 主题文件（17 个）
+├── themes/                 生成的 Zed 主题文件（19 个）
 └── scripts/
     ├── convert.ts          VS Code → Zed 主题转换器
     └── validate.ts         主题结构检查器

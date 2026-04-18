@@ -179,6 +179,9 @@
           "constant.builtin": {
             "color": "#569cd6ff"
           },
+          "constant": {
+            "color": "#569cd6ff"
+          },
           "variable": {
             "color": "#d4d4d4ff"
           },
@@ -285,13 +288,10 @@
             "color": "#ce9178ff"
           },
           "string.special.symbol": {
-            "color": "#ce9178ff"
+            "color": "#569cd6ff"
           },
           "punctuation.delimiter": {
             "color": "#6a9955ff"
-          },
-          "constant": {
-            "color": "#d4d4d4ff"
           },
           "enum": {
             "color": "#d4d4d4ff"

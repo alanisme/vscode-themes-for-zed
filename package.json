@@ -4,13 +4,17 @@
   "scripts": {
     "convert": "tsx scripts/convert.ts",
     "validate": "tsx scripts/validate.ts",
-    "build": "tsx scripts/convert.ts && tsx scripts/validate.ts",
+    "audit": "tsx scripts/audit.ts",
+    "fmt": "biome check --write",
+    "fmt:check": "biome check",
+    "build": "tsx scripts/convert.ts && tsx scripts/validate.ts && tsx scripts/audit.ts",
     "typecheck": "tsc --noEmit",
-    "check": "tsx scripts/convert.ts && tsx scripts/validate.ts && git diff --exit-code themes/"
+    "check": "biome check && tsc --noEmit && tsx scripts/convert.ts && tsx scripts/validate.ts && tsx scripts/audit.ts && git diff --exit-code themes/"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.4.12",
+    "@types/node": "^22.0.0",
     "tsx": "^4.19.0",
-    "typescript": "^5.7.0",
-    "@types/node": "^22.0.0"
+    "typescript": "^5.7.0"
   }
 }

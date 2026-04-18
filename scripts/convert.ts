@@ -1,22 +1,11 @@
-import { writeFileSync, mkdirSync } from "node:fs";
-import { join, dirname } from "node:path";
+import { mkdirSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { type Appearance, THEME_SOURCES } from "./sources.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const THEMES_DIR = join(__dirname, "..", "themes");
-const VSCODE_REF = process.env["VSCODE_REF"] ?? "1.114.0";
-const GITHUB_RAW =
-  `https://raw.githubusercontent.com/microsoft/vscode/${VSCODE_REF}/extensions`;
 const THEME_SUFFIX = " (VS Code)";
-
-type Appearance = "dark" | "light";
-
-interface ThemeSource {
-  family: string;
-  appearance: Appearance;
-  url: string;
-  output: string;
-}
 
 interface TokenColorSettings {
   foreground?: string;
@@ -75,111 +64,6 @@ interface ZedThemeFamily {
   themes: ZedTheme[];
 }
 
-const THEME_SOURCES: ThemeSource[] = [
-  {
-    family: "Abyss",
-    appearance: "dark",
-    url: `${GITHUB_RAW}/theme-abyss/themes/abyss-color-theme.json`,
-    output: "abyss.json",
-  },
-  {
-    family: "Dark Modern",
-    appearance: "dark",
-    url: `${GITHUB_RAW}/theme-defaults/themes/dark_modern.json`,
-    output: "dark-modern.json",
-  },
-  {
-    family: "Dark+",
-    appearance: "dark",
-    url: `${GITHUB_RAW}/theme-defaults/themes/dark_plus.json`,
-    output: "dark-plus.json",
-  },
-  {
-    family: "Visual Studio Dark",
-    appearance: "dark",
-    url: `${GITHUB_RAW}/theme-defaults/themes/dark_vs.json`,
-    output: "visual-studio-dark.json",
-  },
-  {
-    family: "Light Modern",
-    appearance: "light",
-    url: `${GITHUB_RAW}/theme-defaults/themes/light_modern.json`,
-    output: "light-modern.json",
-  },
-  {
-    family: "Light+",
-    appearance: "light",
-    url: `${GITHUB_RAW}/theme-defaults/themes/light_plus.json`,
-    output: "light-plus.json",
-  },
-  {
-    family: "Visual Studio Light",
-    appearance: "light",
-    url: `${GITHUB_RAW}/theme-defaults/themes/light_vs.json`,
-    output: "visual-studio-light.json",
-  },
-  {
-    family: "High Contrast Dark",
-    appearance: "dark",
-    url: `${GITHUB_RAW}/theme-defaults/themes/hc_black.json`,
-    output: "high-contrast-dark.json",
-  },
-  {
-    family: "High Contrast Light",
-    appearance: "light",
-    url: `${GITHUB_RAW}/theme-defaults/themes/hc_light.json`,
-    output: "high-contrast-light.json",
-  },
-  {
-    family: "Kimbie Dark",
-    appearance: "dark",
-    url: `${GITHUB_RAW}/theme-kimbie-dark/themes/kimbie-dark-color-theme.json`,
-    output: "kimbie-dark.json",
-  },
-  {
-    family: "Monokai",
-    appearance: "dark",
-    url: `${GITHUB_RAW}/theme-monokai/themes/monokai-color-theme.json`,
-    output: "monokai.json",
-  },
-  {
-    family: "Monokai Dimmed",
-    appearance: "dark",
-    url: `${GITHUB_RAW}/theme-monokai-dimmed/themes/dimmed-monokai-color-theme.json`,
-    output: "monokai-dimmed.json",
-  },
-  {
-    family: "Quiet Light",
-    appearance: "light",
-    url: `${GITHUB_RAW}/theme-quietlight/themes/quietlight-color-theme.json`,
-    output: "quiet-light.json",
-  },
-  {
-    family: "Red",
-    appearance: "dark",
-    url: `${GITHUB_RAW}/theme-red/themes/Red-color-theme.json`,
-    output: "red.json",
-  },
-  {
-    family: "Solarized Dark",
-    appearance: "dark",
-    url: `${GITHUB_RAW}/theme-solarized-dark/themes/solarized-dark-color-theme.json`,
-    output: "solarized-dark.json",
-  },
-  {
-    family: "Solarized Light",
-    appearance: "light",
-    url: `${GITHUB_RAW}/theme-solarized-light/themes/solarized-light-color-theme.json`,
-    output: "solarized-light.json",
-  },
-  {
-    family: "Tomorrow Night Blue",
-    appearance: "dark",
-    url: `${GITHUB_RAW}/theme-tomorrow-night-blue/themes/tomorrow-night-blue-color-theme.json`,
-    output: "tomorrow-night-blue.json",
-  },
-];
-
 const SCOPE_TO_TOKEN: [string[], string][] = [
   [["comment", "comment.line", "comment.block"], "comment"],
   [["comment.block.documentation", "comment.block.javadoc"], "comment.doc"],
@@ -211,7 +95,12 @@ const SCOPE_TO_TOKEN: [string[], string][] = [
   ],
   [["constant.language"], "constant.builtin"],
   [
-    ["constant.character", "constant.other", "constant.other.color"],
+    [
+      "constant",
+      "constant.character",
+      "constant.other",
+      "constant.other.color",
+    ],
     "constant",
   ],
   [["variable", "variable.other", "variable.other.readwrite"], "variable"],
@@ -421,7 +310,7 @@ async function fetchJson(url: string): Promise<VscodeTheme> {
 }
 
 function resolveIncludeUrl(baseUrl: string, includePath: string): string {
-  return baseUrl.replace(/\/[^/]+$/, "/" + includePath.replace(/^\.\//, ""));
+  return new URL(includePath, baseUrl).toString();
 }
 
 async function resolveTheme(url: string, depth = 0): Promise<VscodeTheme> {
@@ -456,7 +345,7 @@ function normalizeColor(color: string | undefined | null): string | null {
     const [, r, g, b, a] = c;
     return `#${r}${r}${g}${g}${b}${b}${a}${a}`;
   }
-  if (c.length === 7) return c + "ff";
+  if (c.length === 7) return `${c}ff`;
   if (c.length === 9) return c;
   return null;
 }
@@ -590,11 +479,11 @@ function prefixMatch(
   let best: TokenColorSettings | null = null;
   let bestLen = 0;
   for (const [scope, settings] of scopeMap) {
-    if (query.startsWith(scope + ".") && scope.length > bestLen) {
+    if (query.startsWith(`${scope}.`) && scope.length > bestLen) {
       best = settings;
       bestLen = scope.length;
     }
-    if (scope.startsWith(query + ".") && query.length > bestLen) {
+    if (scope.startsWith(`${query}.`) && query.length > bestLen) {
       best = settings;
       bestLen = query.length;
     }
@@ -697,8 +586,8 @@ function mapTokenColors(
     }
   }
 
-  if (defaultSettings?.settings?.foreground && !syntax["primary"]) {
-    syntax["primary"] = {
+  if (defaultSettings?.settings?.foreground && !syntax.primary) {
+    syntax.primary = {
       color: normalizeColor(defaultSettings.settings.foreground) ?? undefined,
     };
   }
@@ -814,20 +703,20 @@ function convertTheme(
   const createdFg =
     pick(
       colors,
-      "editorGutter.addedBackground",
       "gitDecoration.addedResourceForeground",
+      "editorGutter.addedBackground",
     ) ?? "#587c0cff";
   const deletedFg =
     pick(
       colors,
-      "editorGutter.deletedBackground",
       "gitDecoration.deletedResourceForeground",
+      "editorGutter.deletedBackground",
     ) ?? "#94151bff";
   const modifiedFg =
     pick(
       colors,
-      "editorGutter.modifiedBackground",
       "gitDecoration.modifiedResourceForeground",
+      "editorGutter.modifiedBackground",
     ) ?? "#0c7d9dff";
   const ignoredFg =
     pick(colors, "gitDecoration.ignoredResourceForeground") ?? mutedFg;
@@ -874,7 +763,8 @@ function convertTheme(
     "status_bar.background": statusBg,
     "title_bar.background": titleBg,
     "title_bar.inactive_background":
-      pick(colors, "titleBar.inactiveBackground") ?? transparentize(titleBg, 0.6),
+      pick(colors, "titleBar.inactiveBackground") ??
+      transparentize(titleBg, 0.6),
     "toolbar.background": toolbarBg,
     "drop_target.background": dropBg,
     "search.match_background": searchMatchBg,
@@ -957,10 +847,8 @@ function convertTheme(
     "version_control.word_deleted":
       pick(colors, "diffEditor.removedTextBackground") ??
       transparentize(deletedFg, 0.2),
-    "version_control.conflict_marker.ours":
-      transparentize(createdFg, 0.1),
-    "version_control.conflict_marker.theirs":
-      transparentize(infoFg, 0.1),
+    "version_control.conflict_marker.ours": transparentize(createdFg, 0.1),
+    "version_control.conflict_marker.theirs": transparentize(infoFg, 0.1),
     "terminal.background": pick(colors, "terminal.background") ?? editorBg,
     "terminal.foreground": pick(colors, "terminal.foreground") ?? editorFg,
     "terminal.bright_foreground":
@@ -1026,8 +914,7 @@ function convertTheme(
       pick(colors, "terminal.ansiWhite") ?? "#e5e5e5ff",
       0.5,
     ),
-    "terminal.ansi.background":
-      pick(colors, "terminal.background") ?? editorBg,
+    "terminal.ansi.background": pick(colors, "terminal.background") ?? editorBg,
     unreachable:
       pick(colors, "editorUnnecessaryCode.border") ?? transparentize(fg, 0.4),
     "unreachable.background": transparentize(
@@ -1039,26 +926,25 @@ function convertTheme(
     "link_text.hover": linkHover ?? buttonBg,
     syntax: (() => {
       const s = mapTokenColors(tokenColors, semanticTokenColors);
-      const has = (k: string) =>
-        Object.prototype.hasOwnProperty.call(s, k);
+      const has = (k: string) => Object.hasOwn(s, k);
 
       // Direct fallbacks from VS Code UI colors
-      if (!has("primary")) s["primary"] = { color: editorFg };
+      if (!has("primary")) s.primary = { color: editorFg };
       if (!has("link_uri"))
-        s["link_uri"] = {
+        s.link_uri = {
           color:
             pick(colors, "textLink.foreground", "textLink.activeForeground") ??
             buttonBg,
         };
       if (!has("hint"))
-        s["hint"] = {
+        s.hint = {
           color:
             pick(colors, "editorInlayHint.foreground") ??
             transparentize(editorFg, 0.4) ??
             editorFg,
         };
       if (!has("predictive"))
-        s["predictive"] = {
+        s.predictive = {
           color: transparentize(editorFg, 0.4) ?? editorFg,
         };
 
@@ -1095,16 +981,48 @@ function convertTheme(
 
       // Any still-missing tokens use editor foreground (matches VS Code behavior)
       const allTokens = [
-        "attribute", "boolean", "comment", "comment.doc", "constant",
-        "constructor", "diff.minus", "diff.plus", "embedded", "emphasis",
-        "emphasis.strong", "enum", "function", "function.builtin", "keyword",
-        "label", "link_text", "namespace", "number", "operator", "preproc",
-        "property", "punctuation", "punctuation.bracket",
-        "punctuation.delimiter", "punctuation.list_marker",
-        "punctuation.markup", "punctuation.special", "selector",
-        "selector.pseudo", "string", "string.escape", "string.regex",
-        "string.special", "string.special.symbol", "tag", "text.literal",
-        "title", "type", "type.builtin", "variable", "variable.special",
+        "attribute",
+        "boolean",
+        "comment",
+        "comment.doc",
+        "constant",
+        "constructor",
+        "diff.minus",
+        "diff.plus",
+        "embedded",
+        "emphasis",
+        "emphasis.strong",
+        "enum",
+        "function",
+        "function.builtin",
+        "keyword",
+        "label",
+        "link_text",
+        "namespace",
+        "number",
+        "operator",
+        "preproc",
+        "property",
+        "punctuation",
+        "punctuation.bracket",
+        "punctuation.delimiter",
+        "punctuation.list_marker",
+        "punctuation.markup",
+        "punctuation.special",
+        "selector",
+        "selector.pseudo",
+        "string",
+        "string.escape",
+        "string.regex",
+        "string.special",
+        "string.special.symbol",
+        "tag",
+        "text.literal",
+        "title",
+        "type",
+        "type.builtin",
+        "variable",
+        "variable.special",
         "variant",
       ];
       for (const token of allTokens) {
@@ -1138,7 +1056,7 @@ function cleanNulls(obj: unknown): unknown {
 
 async function main(): Promise<void> {
   mkdirSync(THEMES_DIR, { recursive: true });
-  let count = 0;
+  const failures: Array<{ family: string; error: string }> = [];
 
   for (const source of THEME_SOURCES) {
     process.stdout.write(`Converting ${source.family}...`);
@@ -1159,15 +1077,24 @@ async function main(): Promise<void> {
       }) as ZedThemeFamily;
 
       const outputPath = join(THEMES_DIR, source.output);
-      writeFileSync(outputPath, JSON.stringify(family, null, 2) + "\n");
+      writeFileSync(outputPath, `${JSON.stringify(family, null, 2)}\n`);
       console.log(" done");
-      count++;
     } catch (err) {
-      console.error(` FAILED: ${(err as Error).message}`);
+      const message = (err as Error).message;
+      console.error(` FAILED: ${message}`);
+      failures.push({ family: source.family, error: message });
     }
   }
 
-  console.log(`\nConverted ${count}/${THEME_SOURCES.length} themes.`);
+  const ok = THEME_SOURCES.length - failures.length;
+  console.log(`\nConverted ${ok}/${THEME_SOURCES.length} themes.`);
+  if (failures.length > 0) {
+    console.error(`\n${failures.length} theme(s) failed:`);
+    for (const f of failures) {
+      console.error(`  - ${f.family}: ${f.error}`);
+    }
+    process.exit(1);
+  }
 }
 
 main().catch((err: unknown) => {

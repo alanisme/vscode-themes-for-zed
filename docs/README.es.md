@@ -1,6 +1,6 @@
 # VS Code Classics para Zed
 
-**Los 17 temas integrados de Visual Studio Code, fielmente portados a Zed.**
+**Los 19 temas integrados de Visual Studio Code, fielmente portados a Zed.**
 
 Traducciones: [English](../README.md) | [简体中文](README.zh-CN.md) | [Français](README.fr.md) | [日本語](README.ja.md)
 
@@ -14,6 +14,7 @@ Traducciones: [English](../README.md) | [简体中文](README.zh-CN.md) | [Fran�
 
 | Tema | Basado en |
 |------|-----------|
+| **Dark 2026 (VS Code)** | Tema oscuro predeterminado de VS Code (renovación 2026) |
 | **Dark Modern (VS Code)** | Tema oscuro predeterminado de VS Code (2023+) |
 | **Dark+ (VS Code)** | Tema oscuro clásico de VS Code |
 | **Visual Studio Dark (VS Code)** | La base oscura original de VS |
@@ -30,6 +31,7 @@ Traducciones: [English](../README.md) | [简体中文](README.zh-CN.md) | [Fran�
 
 | Tema | Basado en |
 |------|-----------|
+| **Light 2026 (VS Code)** | Tema claro predeterminado de VS Code (renovación 2026) |
 | **Light Modern (VS Code)** | Tema claro predeterminado de VS Code (2023+) |
 | **Light+ (VS Code)** | Tema claro clásico de VS Code |
 | **Visual Studio Light (VS Code)** | La base clara original de VS |
@@ -120,7 +122,7 @@ vscode-themes-for-zed/
 ├── LICENSE                 MIT
 ├── README.md               Documentación principal
 ├── docs/                   READMEs traducidos
-├── themes/                 Archivos de tema Zed generados (17 archivos)
+├── themes/                 Archivos de tema Zed generados (19 archivos)
 └── scripts/
     ├── convert.ts          Convertidor VS Code → Zed
     └── validate.ts         Linter estructural de temas

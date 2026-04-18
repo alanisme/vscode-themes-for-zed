@@ -1,6 +1,6 @@
 # VS Code Classics for Zed
 
-**All 17 built-in Visual Studio Code themes, ported to Zed.**
+**All 19 built-in Visual Studio Code themes, ported to Zed.**
 
 Translations: [简体中文](docs/README.zh-CN.md) | [Español](docs/README.es.md) | [Français](docs/README.fr.md) | [日本語](docs/README.ja.md)
 
@@ -14,6 +14,7 @@ Miss your favorite VS Code look? This extension brings every built-in VS Code co
 
 | Theme | Based on |
 |-------|----------|
+| **Dark 2026 (VS Code)** | VS Code default dark theme (2026 refresh) |
 | **Dark Modern (VS Code)** | VS Code default dark theme (2023+) |
 | **Dark+ (VS Code)** | VS Code classic dark theme |
 | **Visual Studio Dark (VS Code)** | The original VS dark base |
@@ -30,6 +31,7 @@ Miss your favorite VS Code look? This extension brings every built-in VS Code co
 
 | Theme | Based on |
 |-------|----------|
+| **Light 2026 (VS Code)** | VS Code default light theme (2026 refresh) |
 | **Light Modern (VS Code)** | VS Code default light theme (2023+) |
 | **Light+ (VS Code)** | VS Code classic light theme |
 | **Visual Studio Light (VS Code)** | The original VS light base |
@@ -120,7 +122,7 @@ vscode-themes-for-zed/
 ├── LICENSE                 MIT
 ├── README.md               This file
 ├── docs/                   Translated READMEs
-├── themes/                 Generated Zed theme files (17 files)
+├── themes/                 Generated Zed theme files (19 files)
 └── scripts/
     ├── convert.ts          VS Code → Zed theme converter
     └── validate.ts         Theme structural linter
