@@ -89,7 +89,7 @@ Zed を再起動するか、コマンドパレットから **"zed: reload extens
 
 ## 仕組み
 
-すべてのテーマは [VS Code ソースリポジトリ](https://github.com/microsoft/vscode)（デフォルト：`1.96.4`、`VSCODE_REF` で変更可能）から自動パイプラインで変換されます：
+すべてのテーマは [VS Code ソースリポジトリ](https://github.com/microsoft/vscode)（デフォルト：`1.119.0`、`VSCODE_REF` で変更可能）から自動パイプラインで変換されます：
 
 - `microsoft/vscode` の固定バージョンからオリジナルの JSONC テーマファイルを取得
 - `include` チェーンを再帰的に解決（例: Dark Modern → Dark+ → VS Dark）

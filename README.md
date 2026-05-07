@@ -89,7 +89,7 @@ Or add it directly to your `settings.json`:
 
 ## How It Works
 
-Themes are converted from the [VS Code source repository](https://github.com/microsoft/vscode) (default: `1.96.4`, configurable via `VSCODE_REF`) using an automated pipeline:
+Themes are converted from the [VS Code source repository](https://github.com/microsoft/vscode) (default: `1.119.0`, configurable via `VSCODE_REF`) using an automated pipeline:
 
 - Fetches original JSONC theme files from `microsoft/vscode` at the pinned version
 - Recursively resolves the `include` chain (e.g., Dark Modern → Dark+ → VS Dark)

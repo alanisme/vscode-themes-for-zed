@@ -723,8 +723,50 @@ function convertTheme(
   const renamedFg =
     pick(colors, "gitDecoration.renamedResourceForeground") ?? "#73c991ff";
 
+  const minimapBg = pick(colors, "minimapSlider.background") ?? scrollbarBg;
+  const minimapHover =
+    pick(colors, "minimapSlider.hoverBackground") ?? scrollbarHover;
+  const minimapActive =
+    pick(colors, "minimapSlider.activeBackground") ??
+    transparentize(editorFg, 0.35);
+  const scrollbarActive =
+    pick(colors, "scrollbarSlider.activeBackground") ??
+    transparentize(editorFg, 0.35);
+
+  const debuggerAccent =
+    pick(colors, "debugIcon.breakpointForeground") ?? errorFg;
+  const stackFrameBg =
+    pick(colors, "editor.stackFrameHighlightBackground") ??
+    transparentize(infoFg, 0.1);
+  const elementSelection =
+    pick(colors, "selection.background") ?? transparentize(selectedBg, 0.4);
+  const overlayBg =
+    pick(colors, "editorWidget.background", "editorHoverWidget.background") ??
+    dropdownBg;
+
+  const diffAddedLine =
+    pick(colors, "diffEditor.insertedLineBackground") ??
+    transparentize(createdFg, 0.16);
+  const diffRemovedLine =
+    pick(colors, "diffEditor.removedLineBackground") ??
+    transparentize(deletedFg, 0.16);
+
+  const accents = (() => {
+    const out: string[] = [];
+    for (let i = 1; i <= 6; i++) {
+      const c = pick(colors, `editorBracketHighlight.foreground${i}`);
+      if (c) out.push(c);
+    }
+    if (out.length > 0) return out;
+    return derivePlayerColors(cursorColor, selectionBg)
+      .map((p) => p.cursor)
+      .slice(0, 6);
+  })();
+
   const style: Record<string, unknown> = {
     background: editorBg,
+    "background.appearance": "opaque",
+    accents,
     "elevated_surface.background": dropdownBg,
     "surface.background": panelBg,
     "panel.background": panelBg,
@@ -767,6 +809,9 @@ function convertTheme(
       transparentize(titleBg, 0.6),
     "toolbar.background": toolbarBg,
     "drop_target.background": dropBg,
+    "drop_target.border": transparentize(selectedBg, 0.5),
+    "panel.overlay_background": overlayBg,
+    "panel.overlay_hover": hoverBg,
     "search.match_background": searchMatchBg,
     "search.active_match_background":
       pick(colors, "editor.findMatchBackground") ?? searchMatchBg,
@@ -775,6 +820,8 @@ function convertTheme(
     "element.active": transparentize(selectedBg, 0.8),
     "element.selected": selectedBg,
     "element.disabled": transparentize(editorFg, 0.05),
+    "element.selection_background": elementSelection,
+    "debugger.accent": debuggerAccent,
     "ghost_element.background": "#00000000",
     "ghost_element.hover": hoverBg,
     "ghost_element.active": transparentize(selectedBg, 0.6),
@@ -792,9 +839,14 @@ function convertTheme(
     "icon.accent": pick(colors, "textLink.foreground") ?? buttonBg,
     "scrollbar.thumb.background": scrollbarBg,
     "scrollbar.thumb.hover_background": scrollbarHover,
+    "scrollbar.thumb.active_background": scrollbarActive,
     "scrollbar.thumb.border": scrollbarBg,
     "scrollbar.track.background": editorBg,
     "scrollbar.track.border": editorBg,
+    "minimap.thumb.background": minimapBg,
+    "minimap.thumb.hover_background": minimapHover,
+    "minimap.thumb.active_background": minimapActive,
+    "minimap.thumb.border": "#00000000",
     error: errorFg,
     "error.background":
       pick(colors, "editorError.background") ?? transparentize(errorFg, 0.1),
@@ -841,6 +893,9 @@ function convertTheme(
     "version_control.added": createdFg,
     "version_control.deleted": deletedFg,
     "version_control.modified": modifiedFg,
+    "version_control.renamed": renamedFg,
+    "version_control.conflict": conflictFg,
+    "version_control.ignored": ignoredFg,
     "version_control.word_added":
       pick(colors, "diffEditor.insertedTextBackground") ??
       transparentize(createdFg, 0.2),
@@ -849,6 +904,16 @@ function convertTheme(
       transparentize(deletedFg, 0.2),
     "version_control.conflict_marker.ours": transparentize(createdFg, 0.1),
     "version_control.conflict_marker.theirs": transparentize(infoFg, 0.1),
+    "editor.diff_hunk.added.background": diffAddedLine,
+    "editor.diff_hunk.added.hollow_background": transparentize(createdFg, 0.08),
+    "editor.diff_hunk.added.hollow_border": transparentize(createdFg, 0.48),
+    "editor.diff_hunk.deleted.background": diffRemovedLine,
+    "editor.diff_hunk.deleted.hollow_background": transparentize(
+      deletedFg,
+      0.08,
+    ),
+    "editor.diff_hunk.deleted.hollow_border": transparentize(deletedFg, 0.48),
+    "editor.debugger_active_line.background": stackFrameBg,
     "terminal.background": pick(colors, "terminal.background") ?? editorBg,
     "terminal.foreground": pick(colors, "terminal.foreground") ?? editorFg,
     "terminal.bright_foreground":

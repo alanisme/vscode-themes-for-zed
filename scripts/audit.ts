@@ -251,6 +251,42 @@ async function main(): Promise<void> {
       ["terminal.background", "terminal.ansi.background"],
       ["terminal.foreground", "terminal.foreground"],
       ["terminal.foreground", "terminal.bright_foreground"],
+
+      // minimap (post v0.2 schema additions, native to current Zed)
+      ["minimapSlider.background", "minimap.thumb.background"],
+      ["minimapSlider.hoverBackground", "minimap.thumb.hover_background"],
+      ["minimapSlider.activeBackground", "minimap.thumb.active_background"],
+
+      // scrollbar active (post v0.2)
+      ["scrollbarSlider.activeBackground", "scrollbar.thumb.active_background"],
+
+      // diff hunks (post v0.2)
+      [
+        "diffEditor.insertedLineBackground",
+        "editor.diff_hunk.added.background",
+      ],
+      [
+        "diffEditor.removedLineBackground",
+        "editor.diff_hunk.deleted.background",
+      ],
+
+      // debugger
+      ["debugIcon.breakpointForeground", "debugger.accent"],
+      [
+        "editor.stackFrameHighlightBackground",
+        "editor.debugger_active_line.background",
+      ],
+
+      // element selection / overlay
+      ["selection.background", "element.selection_background"],
+
+      // version control extended
+      ["gitDecoration.renamedResourceForeground", "version_control.renamed"],
+      [
+        "gitDecoration.conflictingResourceForeground",
+        "version_control.conflict",
+      ],
+      ["gitDecoration.ignoredResourceForeground", "version_control.ignored"],
     ];
     for (const [vk, zk] of uiChecks) {
       if (!zk) continue;

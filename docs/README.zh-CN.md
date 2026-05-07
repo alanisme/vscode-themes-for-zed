@@ -89,7 +89,7 @@ git clone https://github.com/alanisme/vscode-themes-for-zed `
 
 ## 工作原理
 
-所有主题从 [VS Code 源码仓库](https://github.com/microsoft/vscode)（默认：`1.96.4`，可通过 `VSCODE_REF` 覆盖）通过自动化流水线转换生成：
+所有主题从 [VS Code 源码仓库](https://github.com/microsoft/vscode)（默认：`1.119.0`，可通过 `VSCODE_REF` 覆盖）通过自动化流水线转换生成：
 
 - 从 `microsoft/vscode` 锁定版本获取原始 JSONC 主题文件
 - 递归解析 `include` 继承链（如 Dark Modern → Dark+ → VS Dark）
