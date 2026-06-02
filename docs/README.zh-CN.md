@@ -57,14 +57,14 @@
 
 ```sh
 git clone https://github.com/alanisme/vscode-themes-for-zed \
-  ~/.local/share/zed/extensions/vscode-classics
+  ~/.local/share/zed/extensions/vscode-classics-theme
 ```
 
 **Windows:**
 
 ```powershell
 git clone https://github.com/alanisme/vscode-themes-for-zed `
-  "$env:APPDATA\Zed\extensions\vscode-classics"
+  "$env:APPDATA\Zed\extensions\vscode-classics-theme"
 ```
 
 重启 Zed 或在命令面板中执行 **"zed: reload extensions"**。
