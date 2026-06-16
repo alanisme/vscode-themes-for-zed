@@ -57,14 +57,14 @@ Clonez ce dépôt dans le répertoire des extensions Zed :
 
 ```sh
 git clone https://github.com/alanisme/vscode-themes-for-zed \
-  ~/.local/share/zed/extensions/vscode-classics-theme
+  ~/.local/share/zed/extensions/vscode-classic-themes
 ```
 
 **Windows :**
 
 ```powershell
 git clone https://github.com/alanisme/vscode-themes-for-zed `
-  "$env:APPDATA\Zed\extensions\vscode-classics-theme"
+  "$env:APPDATA\Zed\extensions\vscode-classic-themes"
 ```
 
 Redémarrez Zed ou exécutez **"zed: reload extensions"** depuis la palette de commandes.
