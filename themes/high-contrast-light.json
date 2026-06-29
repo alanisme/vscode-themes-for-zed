@@ -319,6 +319,9 @@
           "punctuation.markup": {
             "color": "#0451a5ff"
           },
+          "property.json_key": {
+            "color": "#0451a5ff"
+          },
           "primary": {
             "color": "#333333ff"
           },

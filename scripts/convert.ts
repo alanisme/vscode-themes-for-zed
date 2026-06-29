@@ -1,6 +1,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { SYNTAX_OVERRIDES } from "./overrides.js";
 import { type Appearance, THEME_SOURCES } from "./sources.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -529,6 +530,18 @@ function mapTokenColors(
       if (fs.includes("bold")) entry.font_weight = 700;
     }
     if (Object.keys(entry).length > 0) syntax[token] = entry;
+  }
+
+  // JSON keys -> Zed `property.json_key`. Only emit when the theme defines the
+  // language-specific scope EXACTLY. prefixMatch would fuzzily fall back to
+  // `support.type` and leak a wrong color into themes that don't distinguish
+  // JSON keys (e.g. Monokai would get its cyan support.type color), so we use a
+  // strict exact lookup here. Themes without the scope leave it unset and JSON
+  // keys fall back to `property`, matching prior behavior. (issue #1)
+  const jsonKeySettings = scopeMap.get("support.type.property-name.json");
+  if (jsonKeySettings?.foreground) {
+    const color = normalizeColor(jsonKeySettings.foreground);
+    if (color) syntax["property.json_key"] = { color };
   }
 
   const resolvedSemantic = new Map<string, string | TokenColorSettings>();
@@ -1119,6 +1132,16 @@ function cleanNulls(obj: unknown): unknown {
   return obj;
 }
 
+function applySyntaxOverrides(theme: ZedTheme, output: string): void {
+  const overrides = SYNTAX_OVERRIDES[output];
+  if (!overrides) return;
+  const syntax = theme.style.syntax ?? {};
+  theme.style.syntax = syntax;
+  for (const [token, entry] of Object.entries(overrides)) {
+    syntax[token] = { ...syntax[token], ...entry };
+  }
+}
+
 async function main(): Promise<void> {
   mkdirSync(THEMES_DIR, { recursive: true });
   const failures: Array<{ family: string; error: string }> = [];
@@ -1133,6 +1156,7 @@ async function main(): Promise<void> {
         displayName,
         source.appearance,
       );
+      applySyntaxOverrides(zedTheme, source.output);
 
       const family = cleanNulls({
         $schema: "https://zed.dev/schema/themes/v0.2.0.json",

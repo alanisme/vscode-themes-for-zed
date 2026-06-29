@@ -7,7 +7,7 @@ export interface ThemeSource {
   output: string;
 }
 
-export const VSCODE_REF = process.env.VSCODE_REF ?? "1.119.0";
+export const VSCODE_REF = process.env.VSCODE_REF ?? "1.126.0";
 const GITHUB_RAW = `https://raw.githubusercontent.com/microsoft/vscode/${VSCODE_REF}/extensions`;
 
 export const THEME_SOURCES: ThemeSource[] = [

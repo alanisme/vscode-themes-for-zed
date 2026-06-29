@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { SYNTAX_OVERRIDES } from "./overrides.js";
 import { THEME_SOURCES } from "./sources.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -357,10 +358,35 @@ async function main(): Promise<void> {
       ["entity.other.attribute-name", "attribute"],
       ["entity.name.namespace", "namespace"],
       ["entity.name.tag.css", "selector"],
+      ["support.type.property-name.json", "property.json_key"],
     ];
+    const themeOverrides = SYNTAX_OVERRIDES[source.output] ?? {};
     for (const [scope, tok] of syntaxChecks) {
-      const src = findScopeColor(vtheme.tokenColors, scope);
       const out = syntax[tok]?.color;
+
+      // Tier B: this token intentionally deviates from the source scope, so
+      // assert it matches the curated override instead of the source. Keeps
+      // the audit meaningful (the override must actually be applied) without
+      // reporting an intended deviation as a mismatch.
+      const override = themeOverrides[tok];
+      if (override?.color) {
+        if (out) {
+          assertions++;
+          const expected = norm(override.color);
+          if (expected !== out) {
+            mismatches.push({
+              theme: source.family,
+              key: `syntax.${tok}`,
+              source: expected,
+              output: out,
+              note: "Tier B override (overrides.ts) not applied",
+            });
+          }
+        }
+        continue;
+      }
+
+      const src = findScopeColor(vtheme.tokenColors, scope);
       if (src && out) {
         assertions++;
         if (src !== out) {
