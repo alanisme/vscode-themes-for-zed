@@ -362,11 +362,17 @@ function pick(
   return null;
 }
 
+// Scales the source color's existing alpha by `alpha` (rather than replacing
+// it). For opaque sources this equals setting the alpha outright; for sources
+// that are already translucent overlays (e.g. Dark/Light 2026's
+// `list.activeSelectionBackground` = #FFFFFF22) it keeps the derived value a
+// faint tint instead of turning it into a near-solid white/black block.
 function transparentize(color: string | null, alpha: number): string | null {
   if (!color) return null;
   const hex = normalizeColor(color);
   if (!hex || hex.length < 7) return null;
-  const a = Math.round(alpha * 255)
+  const srcAlpha = Number.parseInt(hex.slice(7, 9), 16) / 255;
+  const a = Math.round(alpha * srcAlpha * 255)
     .toString(16)
     .padStart(2, "0");
   return hex.slice(0, 7) + a;
@@ -692,8 +698,20 @@ function convertTheme(
     pick(colors, "editorWhitespace.foreground") ??
     transparentize(editorFg, 0.15);
   const cursorColor = pick(colors, "editorCursor.foreground") ?? editorFg;
+  // VS Code's default themes (Dark+/Modern/VS, Light+/Modern/VS, HC Light)
+  // don't set `editor.selectionBackground` in JSON; it comes from the
+  // workbench color registry (src/vs/platform/theme/common/colors/editorColors.ts).
+  const isHighContrast = familyName.startsWith("High Contrast");
+  const registrySelectionBg =
+    appearance === "dark"
+      ? isHighContrast
+        ? "#f3f518ff"
+        : "#264f78ff"
+      : isHighContrast
+        ? "#0f4a85ff"
+        : "#add6ffff";
   const selectionBg =
-    pick(colors, "editor.selectionBackground") ?? transparentize(editorFg, 0.2);
+    pick(colors, "editor.selectionBackground") ?? registrySelectionBg;
 
   const isDark = appearance === "dark";
   const docHighlightRead =
@@ -751,8 +769,7 @@ function convertTheme(
   const stackFrameBg =
     pick(colors, "editor.stackFrameHighlightBackground") ??
     transparentize(infoFg, 0.1);
-  const elementSelection =
-    pick(colors, "selection.background") ?? transparentize(selectedBg, 0.4);
+  const elementSelection = pick(colors, "selection.background") ?? selectionBg;
   const overlayBg =
     pick(colors, "editorWidget.background", "editorHoverWidget.background") ??
     dropdownBg;

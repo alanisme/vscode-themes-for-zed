@@ -67,7 +67,7 @@
         "element.active": "#0060c0cc",
         "element.selected": "#0060c0ff",
         "element.disabled": "#3333330d",
-        "element.selection_background": "#0060c066",
+        "element.selection_background": "#0f4a85ff",
         "debugger.accent": "#f44747ff",
         "ghost_element.background": "#00000000",
         "ghost_element.hover": "#3333330d",
@@ -125,7 +125,7 @@
         "renamed.background": "#73c9911a",
         "renamed.border": "#00000000",
         "ignored": "#33333399",
-        "ignored.background": "#3333331a",
+        "ignored.background": "#3333330f",
         "ignored.border": "#00000000",
         "hidden": "#33333333",
         "hidden.background": "#33333305",
@@ -342,7 +342,7 @@
           {
             "cursor": "#333333ff",
             "background": "#33333326",
-            "selection": "#33333333"
+            "selection": "#0f4a85ff"
           },
           {
             "cursor": "#806c33ff",

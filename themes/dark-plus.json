@@ -67,7 +67,7 @@
         "element.active": "#094771cc",
         "element.selected": "#094771ff",
         "element.disabled": "#d4d4d40d",
-        "element.selection_background": "#09477166",
+        "element.selection_background": "#264f78ff",
         "debugger.accent": "#f44747ff",
         "ghost_element.background": "#00000000",
         "ghost_element.hover": "#d4d4d40d",
@@ -125,7 +125,7 @@
         "renamed.background": "#73c9911a",
         "renamed.border": "#00000000",
         "ignored": "#d4d4d499",
-        "ignored.background": "#d4d4d41a",
+        "ignored.background": "#d4d4d40f",
         "ignored.border": "#00000000",
         "hidden": "#d4d4d433",
         "hidden.background": "#d4d4d405",
@@ -339,7 +339,7 @@
           {
             "cursor": "#d4d4d4ff",
             "background": "#d4d4d426",
-            "selection": "#d4d4d433"
+            "selection": "#264f78ff"
           },
           {
             "cursor": "#d4b455ff",

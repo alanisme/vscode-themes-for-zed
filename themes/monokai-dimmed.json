@@ -67,7 +67,7 @@
         "element.active": "#707070cc",
         "element.selected": "#707070ff",
         "element.disabled": "#c5c8c60d",
-        "element.selection_background": "#70707066",
+        "element.selection_background": "#676b7180",
         "debugger.accent": "#f44747ff",
         "ghost_element.background": "#00000000",
         "ghost_element.hover": "#444444ff",

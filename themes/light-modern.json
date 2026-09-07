@@ -67,7 +67,7 @@
         "element.active": "#e8e8e8cc",
         "element.selected": "#e8e8e8ff",
         "element.disabled": "#3b3b3b0d",
-        "element.selection_background": "#e8e8e866",
+        "element.selection_background": "#add6ffff",
         "debugger.accent": "#f44747ff",
         "ghost_element.background": "#00000000",
         "ghost_element.hover": "#f2f2f2ff",
@@ -342,7 +342,7 @@
           {
             "cursor": "#3b3b3bff",
             "background": "#3b3b3b26",
-            "selection": "#3b3b3b33"
+            "selection": "#add6ffff"
           },
           {
             "cursor": "#806c33ff",

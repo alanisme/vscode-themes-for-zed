@@ -67,7 +67,7 @@
         "element.active": "#094771cc",
         "element.selected": "#094771ff",
         "element.disabled": "#cccccc0d",
-        "element.selection_background": "#09477166",
+        "element.selection_background": "#264f78ff",
         "debugger.accent": "#f44747ff",
         "ghost_element.background": "#00000000",
         "ghost_element.hover": "#cccccc0d",
@@ -339,7 +339,7 @@
           {
             "cursor": "#ccccccff",
             "background": "#cccccc26",
-            "selection": "#cccccc33"
+            "selection": "#264f78ff"
           },
           {
             "cursor": "#ccad52ff",
