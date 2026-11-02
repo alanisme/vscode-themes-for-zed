@@ -54,7 +54,7 @@
         "tab.inactive_background": "#001c40ff",
         "status_bar.background": "#001126ff",
         "title_bar.background": "#001126ff",
-        "title_bar.inactive_background": "#00112699",
+        "title_bar.inactive_background": "#0e1926ff",
         "toolbar.background": "#002451ff",
         "drop_target.background": "#ffffff26",
         "drop_target.border": "#ffffff30",
@@ -257,7 +257,7 @@
             "color": "#ffc58fff"
           },
           "preproc": {
-            "color": "#bbdaffff"
+            "color": "#ebbbffff"
           },
           "title": {
             "font_weight": 700
@@ -309,6 +309,9 @@
           },
           "string.special.symbol": {
             "color": "#d1f1a9ff"
+          },
+          "tag.component": {
+            "color": "#ffeeadff"
           },
           "primary": {
             "color": "#ffffffff"

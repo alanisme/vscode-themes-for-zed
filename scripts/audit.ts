@@ -198,7 +198,15 @@ async function main(): Promise<void> {
       ["editorIndentGuide.activeBackground", "editor.indent_guide_active"],
       ["editorIndentGuide.activeBackground", "panel.indent_guide_active"],
       ["editorIndentGuide.activeBackground", "panel.indent_guide_hover"],
+      // VS Code now ships the bracket-pair-level keys (background1..6);
+      // level 1 is what the converter maps when present.
+      ["editorIndentGuide.background1", "editor.indent_guide"],
+      ["editorIndentGuide.background1", "panel.indent_guide"],
+      ["editorIndentGuide.activeBackground1", "editor.indent_guide_active"],
+      ["editorIndentGuide.activeBackground1", "panel.indent_guide_active"],
+      ["editorIndentGuide.activeBackground1", "panel.indent_guide_hover"],
       ["editorWhitespace.foreground", "editor.invisible"],
+      ["editorCodeLens.foreground", "editor.code_lens.foreground"],
       [
         "editorBracketMatch.background",
         "editor.document_highlight.bracket_background",
@@ -348,6 +356,9 @@ async function main(): Promise<void> {
       ["comment", "comment"],
       ["string", "string"],
       ["keyword", "keyword"],
+      ["keyword.control", "keyword.control"],
+      ["keyword.control", "preproc"],
+      ["support.class", "tag.component"],
       ["variable", "variable"],
       ["entity.name.function", "function"],
       ["entity.name.tag", "tag"],

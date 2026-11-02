@@ -20,9 +20,9 @@
         "elevated_surface.background": "#ffffffff",
         "surface.background": "#f8f8f8ff",
         "panel.background": "#f8f8f8ff",
-        "panel.indent_guide": "#3b3b3b1a",
-        "panel.indent_guide_active": "#3b3b3b4d",
-        "panel.indent_guide_hover": "#3b3b3b4d",
+        "panel.indent_guide": "#d3d3d3ff",
+        "panel.indent_guide_active": "#939393ff",
+        "panel.indent_guide_hover": "#939393ff",
         "border": "#e5e5e5ff",
         "border.variant": "#e5e5e5ff",
         "border.focused": "#005fb8ff",
@@ -39,8 +39,8 @@
         "editor.active_line_number": "#171184ff",
         "editor.line_number": "#6e7681ff",
         "editor.hover_line_number": "#171184ff",
-        "editor.indent_guide": "#3b3b3b1a",
-        "editor.indent_guide_active": "#3b3b3b4d",
+        "editor.indent_guide": "#d3d3d3ff",
+        "editor.indent_guide_active": "#939393ff",
         "editor.invisible": "#3b3b3b26",
         "editor.wrap_guide": "#e5e5e5ff",
         "editor.active_wrap_guide": "#e5e5e5ff",
@@ -75,12 +75,12 @@
         "ghost_element.selected": "#e8e8e880",
         "ghost_element.disabled": "#3b3b3b0d",
         "text": "#3b3b3bff",
-        "text.muted": "#868686ff",
+        "text.muted": "#616161ff",
         "text.placeholder": "#3b3b3b66",
         "text.disabled": "#3b3b3b4d",
         "text.accent": "#005fb8ff",
         "icon": "#3b3b3bff",
-        "icon.muted": "#868686ff",
+        "icon.muted": "#616161ff",
         "icon.disabled": "#3b3b3b4d",
         "icon.placeholder": "#3b3b3b66",
         "icon.accent": "#005fb8ff",
@@ -124,8 +124,8 @@
         "renamed": "#73c991ff",
         "renamed.background": "#73c9911a",
         "renamed.border": "#00000000",
-        "ignored": "#868686ff",
-        "ignored.background": "#8686861a",
+        "ignored": "#616161ff",
+        "ignored.background": "#6161611a",
         "ignored.border": "#00000000",
         "hidden": "#3b3b3b33",
         "hidden.background": "#3b3b3b05",
@@ -138,7 +138,7 @@
         "version_control.modified": "#005fb8ff",
         "version_control.renamed": "#73c991ff",
         "version_control.conflict": "#e4676bff",
-        "version_control.ignored": "#868686ff",
+        "version_control.ignored": "#616161ff",
         "version_control.word_added": "#2ea04333",
         "version_control.word_deleted": "#f8514933",
         "version_control.conflict_marker.ours": "#2ea0431a",
@@ -263,7 +263,7 @@
             "color": "#0451a5ff"
           },
           "preproc": {
-            "color": "#0000ffff"
+            "color": "#af00dbff"
           },
           "title": {
             "color": "#800000ff",
@@ -321,6 +321,15 @@
           },
           "property.json_key": {
             "color": "#0451a5ff"
+          },
+          "keyword.control": {
+            "color": "#af00dbff"
+          },
+          "keyword.import": {
+            "color": "#af00dbff"
+          },
+          "tag.component": {
+            "color": "#267f99ff"
           },
           "primary": {
             "color": "#3b3b3bff"

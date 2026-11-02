@@ -20,9 +20,9 @@
         "elevated_surface.background": "#313131ff",
         "surface.background": "#181818ff",
         "panel.background": "#181818ff",
-        "panel.indent_guide": "#cccccc1a",
-        "panel.indent_guide_active": "#cccccc4d",
-        "panel.indent_guide_hover": "#cccccc4d",
+        "panel.indent_guide": "#404040ff",
+        "panel.indent_guide_active": "#707070ff",
+        "panel.indent_guide_hover": "#707070ff",
         "border": "#2b2b2bff",
         "border.variant": "#2b2b2bff",
         "border.focused": "#0078d4ff",
@@ -39,8 +39,8 @@
         "editor.active_line_number": "#ccccccff",
         "editor.line_number": "#6e7681ff",
         "editor.hover_line_number": "#ccccccff",
-        "editor.indent_guide": "#cccccc1a",
-        "editor.indent_guide_active": "#cccccc4d",
+        "editor.indent_guide": "#404040ff",
+        "editor.indent_guide_active": "#707070ff",
         "editor.invisible": "#cccccc26",
         "editor.wrap_guide": "#2b2b2bff",
         "editor.active_wrap_guide": "#2b2b2bff",
@@ -263,7 +263,7 @@
             "color": "#6a9955ff"
           },
           "preproc": {
-            "color": "#569cd6ff"
+            "color": "#c586c0ff"
           },
           "title": {
             "color": "#569cd6ff",
@@ -318,6 +318,15 @@
           },
           "punctuation.markup": {
             "color": "#6a9955ff"
+          },
+          "keyword.control": {
+            "color": "#c586c0ff"
+          },
+          "keyword.import": {
+            "color": "#c586c0ff"
+          },
+          "tag.component": {
+            "color": "#4ec9b0ff"
           },
           "primary": {
             "color": "#ccccccff"

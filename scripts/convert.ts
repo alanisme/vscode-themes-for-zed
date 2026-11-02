@@ -550,6 +550,52 @@ function mapTokenColors(
     if (color) syntax["property.json_key"] = { color };
   }
 
+  // Control-flow keywords. Zed's built-in grammars (Rust, Go, C/C++, JS/TS,
+  // Bash) tag `if`/`return`/`for`/... as `keyword.control` and JS/TS module
+  // keywords as `keyword.import`; VS Code themes such as Dark+ color the
+  // matching TextMate scopes (`keyword.control.*`) differently from plain
+  // `keyword`. Resolve TextMate-style (exact scope, then its parents — never
+  // the fuzzy bidirectional prefixMatch, which would let `keyword` pick up an
+  // unrelated child rule) and only emit when the result differs from
+  // `keyword`, so themes that don't distinguish them keep falling back.
+  const tmResolve = (scope: string): TokenColorSettings | null => {
+    const parts = scope.split(".");
+    while (parts.length > 0) {
+      const hit = scopeMap.get(parts.join("."));
+      if (hit) return hit;
+      parts.pop();
+    }
+    return null;
+  };
+  const keywordColor = syntax.keyword?.color;
+  for (const [token, scope] of [
+    ["keyword.control", "keyword.control"],
+    ["keyword.import", "keyword.control.import"],
+  ] as const) {
+    const color = normalizeColor(tmResolve(scope)?.foreground);
+    if (color && color !== keywordColor) syntax[token] = { color };
+  }
+
+  // C/C++ directives (`#include`, `#define`, ...) are captured
+  // `@keyword.preproc @preproc`; Zed applies the later capture, so `preproc`
+  // is what renders. In VS Code the directive keyword is
+  // `keyword.control.directive.*` inside `meta.preprocessor`, and the innermost
+  // scope wins, so its color is the keyword one (purple in Dark+), not the
+  // `meta.preprocessor` color used for the macro body.
+  const directive = normalizeColor(
+    tmResolve("keyword.control.directive")?.foreground,
+  );
+  if (directive) syntax.preproc = { color: directive };
+
+  // JSX components (`<Foo>`) are captured `@type @tag.component.jsx`; the
+  // later capture wins and would fall back to `tag`. VS Code scopes them
+  // `support.class.component.*`, which resolves through `support.class`.
+  const component = normalizeColor(
+    tmResolve("support.class.component")?.foreground,
+  );
+  if (component && component !== syntax.tag?.color)
+    syntax["tag.component"] = { color: component };
+
   const resolvedSemantic = new Map<string, string | TokenColorSettings>();
   const semanticEntries = Object.entries(semanticTokenColors);
   semanticEntries.sort((a, b) => {
@@ -689,11 +735,17 @@ function convertTheme(
     "editorLink.activeForeground",
   );
   const indentGuide =
-    pick(colors, "editorIndentGuide.background") ??
-    transparentize(editorFg, 0.1);
+    pick(
+      colors,
+      "editorIndentGuide.background1",
+      "editorIndentGuide.background",
+    ) ?? transparentize(editorFg, 0.1);
   const indentGuideActive =
-    pick(colors, "editorIndentGuide.activeBackground") ??
-    transparentize(editorFg, 0.3);
+    pick(
+      colors,
+      "editorIndentGuide.activeBackground1",
+      "editorIndentGuide.activeBackground",
+    ) ?? transparentize(editorFg, 0.3);
   const whitespace =
     pick(colors, "editorWhitespace.foreground") ??
     transparentize(editorFg, 0.15);
@@ -822,6 +874,7 @@ function convertTheme(
     "editor.indent_guide": indentGuide,
     "editor.indent_guide_active": indentGuideActive,
     "editor.invisible": whitespace,
+    "editor.code_lens.foreground": pick(colors, "editorCodeLens.foreground"),
     "editor.wrap_guide": border,
     "editor.active_wrap_guide": border,
     "editor.document_highlight.read_background": docHighlightRead,

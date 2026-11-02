@@ -31,6 +31,15 @@ export const SYNTAX_OVERRIDES: Record<
   "dark-2026.json": {
     variable: { color: "#c9d1d9ff" },
     "variable.parameter": { color: "#ffa657ff" },
+    // Control-flow keywords: the theme only defines bare `keyword` (#ff7b72);
+    // `keyword.control` resolves through the include chain to Dark+'s purple
+    // (#C586C0), but VS Code renders `if`/`return`/... red like every other
+    // keyword. Verified in VS Code 1.144 (TS `if` is red).
+    "keyword.control": { color: "#ff7b72ff" },
+    "keyword.import": { color: "#ff7b72ff" },
+    // C/C++ directives (`#include`) resolve to `keyword.control.directive`;
+    // same inheritance situation, kept on the keyword color by analogy.
+    preproc: { color: "#ff7b72ff" },
   },
   // issue #1 (by analogy): Light 2026 is the GitHub-Light counterpart with the
   // same scope inversion — bare `variable` (#953800, orange accent) is shown
@@ -40,5 +49,11 @@ export const SYNTAX_OVERRIDES: Record<
   "light-2026.json": {
     variable: { color: "#1f2328ff" },
     "variable.parameter": { color: "#953800ff" },
+    // Control-flow keywords, mirroring the verified Dark 2026 fix: keep them
+    // on the theme's `keyword` color instead of Light+'s inherited purple
+    // (#AF00DB). Applied structurally; not independently screenshot-verified.
+    "keyword.control": { color: "#cf222eff" },
+    "keyword.import": { color: "#cf222eff" },
+    preproc: { color: "#cf222eff" },
   },
 };

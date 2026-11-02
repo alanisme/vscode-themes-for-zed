@@ -20,9 +20,9 @@
         "elevated_surface.background": "#000000ff",
         "surface.background": "#000000ff",
         "panel.background": "#000000ff",
-        "panel.indent_guide": "#ffffff1a",
-        "panel.indent_guide_active": "#ffffff4d",
-        "panel.indent_guide_hover": "#ffffff4d",
+        "panel.indent_guide": "#ffffffff",
+        "panel.indent_guide_active": "#ffffffff",
+        "panel.indent_guide_hover": "#ffffffff",
         "border": "#444444ff",
         "border.variant": "#444444ff",
         "border.focused": "#444444ff",
@@ -39,8 +39,8 @@
         "editor.active_line_number": "#ffffffff",
         "editor.line_number": "#ffffff66",
         "editor.hover_line_number": "#ffffffff",
-        "editor.indent_guide": "#ffffff1a",
-        "editor.indent_guide_active": "#ffffff4d",
+        "editor.indent_guide": "#ffffffff",
+        "editor.indent_guide_active": "#ffffffff",
         "editor.invisible": "#7c7c7cff",
         "editor.wrap_guide": "#444444ff",
         "editor.active_wrap_guide": "#444444ff",
@@ -54,7 +54,7 @@
         "tab.inactive_background": "#000000ff",
         "status_bar.background": "#000000ff",
         "title_bar.background": "#000000ff",
-        "title_bar.inactive_background": "#00000099",
+        "title_bar.inactive_background": "#000000ff",
         "toolbar.background": "#000000ff",
         "drop_target.background": "#09477166",
         "drop_target.border": "#09477180",
@@ -260,7 +260,7 @@
             "color": "#808080ff"
           },
           "preproc": {
-            "color": "#569cd6ff"
+            "color": "#c586c0ff"
           },
           "title": {
             "color": "#6796e6ff",
@@ -307,6 +307,15 @@
           },
           "string.special": {
             "color": "#ce9178ff"
+          },
+          "keyword.control": {
+            "color": "#c586c0ff"
+          },
+          "keyword.import": {
+            "color": "#c586c0ff"
+          },
+          "tag.component": {
+            "color": "#4ec9b0ff"
           },
           "primary": {
             "color": "#ffffffff"

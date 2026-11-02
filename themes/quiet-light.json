@@ -54,7 +54,7 @@
         "tab.inactive_background": "#f5f5f5ff",
         "status_bar.background": "#705697ff",
         "title_bar.background": "#c4b7d7ff",
-        "title_bar.inactive_background": "#c4b7d799",
+        "title_bar.inactive_background": "#d6cfe2ff",
         "toolbar.background": "#f5f5f5ff",
         "drop_target.background": "#c4d9b166",
         "drop_target.border": "#c4d9b180",
@@ -75,12 +75,12 @@
         "ghost_element.selected": "#c4d9b180",
         "ghost_element.disabled": "#3333330d",
         "text": "#333333ff",
-        "text.muted": "#33333399",
+        "text.muted": "#54494bff",
         "text.placeholder": "#33333366",
         "text.disabled": "#3333334d",
         "text.accent": "#705697ff",
         "icon": "#333333ff",
-        "icon.muted": "#33333399",
+        "icon.muted": "#54494bff",
         "icon.disabled": "#3333334d",
         "icon.placeholder": "#33333366",
         "icon.accent": "#705697ff",
@@ -124,8 +124,8 @@
         "renamed": "#73c991ff",
         "renamed.background": "#73c9911a",
         "renamed.border": "#00000000",
-        "ignored": "#33333399",
-        "ignored.background": "#3333330f",
+        "ignored": "#54494bff",
+        "ignored.background": "#54494b1a",
         "ignored.border": "#00000000",
         "hidden": "#33333333",
         "hidden.background": "#33333305",
@@ -138,7 +138,7 @@
         "version_control.modified": "#0c7d9dff",
         "version_control.renamed": "#73c991ff",
         "version_control.conflict": "#e4676bff",
-        "version_control.ignored": "#33333399",
+        "version_control.ignored": "#54494bff",
         "version_control.word_added": "#587c0c33",
         "version_control.word_deleted": "#94151b33",
         "version_control.conflict_marker.ours": "#587c0c1a",
@@ -269,8 +269,7 @@
             "color": "#777777ff"
           },
           "preproc": {
-            "color": "#aa3731ff",
-            "font_weight": 700
+            "color": "#4b69c6ff"
           },
           "title": {
             "color": "#aa3731ff"
@@ -325,6 +324,9 @@
           },
           "punctuation.markup": {
             "color": "#777777ff"
+          },
+          "tag.component": {
+            "color": "#7a3e9dff"
           },
           "primary": {
             "color": "#333333ff"
